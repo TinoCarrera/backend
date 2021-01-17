@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 // Rutas
 const authRoutes = require("./routes/auth");
+const adminRoutes = require("./routes/admin/auth");
 
 // Variables de entorno
 require("dotenv").config();
@@ -26,6 +27,7 @@ db.once("open", () => {
 
 app.use(express.json());
 app.use("/api", authRoutes);
+app.use("/api", adminRoutes);
 
 const port = process.env.PORT;
 
