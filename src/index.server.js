@@ -3,8 +3,8 @@ const app = express();
 const mongoose = require("mongoose");
 
 // Rutas
-const authRoutes = require("./routes/auth");
-const adminRoutes = require("./routes/admin/auth");
+const userRouter = require("./routes/user.routes");
+const categoryRouter = require("./routes/category.routes");
 
 // Variables de entorno
 require("dotenv").config();
@@ -15,7 +15,7 @@ const uri = process.env.MONGODB_URI;
 mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
 });
 
 const db = mongoose.connection;
@@ -26,8 +26,8 @@ db.once("open", () => {
 });
 
 app.use(express.json());
-app.use("/api", authRoutes);
-app.use("/api", adminRoutes);
+app.use("/api", userRouter);
+app.use("/api", categoryRouter);
 
 const port = process.env.PORT;
 
