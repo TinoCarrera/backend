@@ -19,6 +19,7 @@ exports.userSignup = async (req, res) => {
         password,
         username,
       });
+      newUser.password = await newUser.encrypt(password);
       const saveUser = await newUser.save();
       res
         .status(201)
