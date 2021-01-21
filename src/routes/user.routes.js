@@ -4,10 +4,10 @@ const UserValidator = require("../validators/user.validator");
 const router = express.Router();
 
 router.post(
-  "/register",
-  UserValidator.validateRegister,
+  "/signup",
+  UserValidator.validateSignup,
   UserValidator.isValidated,
-  UserController.userRegister
+  UserController.userSignup
 );
 router.post(
   "/login",
@@ -18,10 +18,10 @@ router.post(
 
 // Admin
 router.post(
-  "/admin/register",
-  UserValidator.validateRegister,
+  "/admin/signup",
+  UserValidator.validateSignup,
   UserValidator.isValidated,
-  UserController.adminRegister
+  UserController.adminSignup
 );
 router.post(
   "/admin/login",

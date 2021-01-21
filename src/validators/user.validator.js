@@ -1,6 +1,6 @@
 const { check, validationResult } = require("express-validator");
 
-exports.validateRegister = [
+exports.validateSignup = [
   check("firstName").notEmpty().withMessage("Coloca tu nombre"),
   check("lastName").notEmpty().withMessage("Coloca tu apellido"),
   check("username").notEmpty().withMessage("Coloca un nombre de usuario"),

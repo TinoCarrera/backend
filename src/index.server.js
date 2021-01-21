@@ -27,7 +27,7 @@ db.once("open", () => {
 
 app.use(express.json());
 app.use("/api", userRouter);
-app.use("/api", categoryRouter);
+app.use("/api/categories", categoryRouter);
 
 const port = process.env.PORT;
 

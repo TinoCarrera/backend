@@ -54,11 +54,8 @@ const UserSchema = new mongoose.Schema(
 );
 
 UserSchema.virtual("password").set(function (password) {
-  this.hash_password = bcrypt.hashSync(password, 10);
-});
-
-UserSchema.virtual("fullName").get(function () {
-  return `${this.firstName} ${this.lastName}`;
+  const salt = bcrypt.genSaltSync(10);
+  this.hash_password = bcrypt.hashSync(password, salt);
 });
 
 UserSchema.methods = {
@@ -66,6 +63,10 @@ UserSchema.methods = {
     return bcrypt.compareSync(password, this.hash_password);
   },
 };
+
+UserSchema.virtual("fullName").get(function () {
+  return `${this.firstName} ${this.lastName}`;
+});
 
 const User = mongoose.model("User", UserSchema);
 
