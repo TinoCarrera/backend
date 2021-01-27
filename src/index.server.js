@@ -26,8 +26,8 @@ db.once("open", () => {
 });
 
 app.use(express.json());
-app.use("/api", userRouter);
-app.use("/api/categories", categoryRouter);
+app.use("/", userRouter);
+app.use("/categories", categoryRouter);
 
 const port = process.env.PORT;
 
