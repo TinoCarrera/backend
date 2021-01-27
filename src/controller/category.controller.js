@@ -1,6 +1,25 @@
 const Category = require("../models/category.model");
 const slugify = require("slugify");
 
+function createCategories(categories, parentId = null) {
+  const categoryList = [];
+  let category;
+  if (parentId == null) {
+    category = categories.filter((cat) => cat.parentId == undefined);
+  } else {
+    category = categories.filter((cat) => cat.parentId == parentId);
+  }
+  for (let cate of category) {
+    categoryList.push({
+      _id: cate._id,
+      name: cate.name,
+      slug: cate.slug,
+      children: createCategories(categories, cate._id)
+    });
+  }
+  return categoryList;
+}
+
 exports.addCategory = async (req, res) => {
   try {
     const categoryObj = {
@@ -29,9 +48,10 @@ exports.getCategories = async (req, res) => {
         message: "Ninguna catogoria encontrada",
       });
     } else {
+      const categoryList = createCategories(categories);
       res
         .status(200)
-        .json({ data: categories, message: "Categorias encontradas" });
+        .json({ data: categoryList, message: "Categorias encontradas" });
     }
   } catch (error) {
     console.log("Error: " + error);
