@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 // Rutas
 const userRouter = require("./routes/user.routes");
 const categoryRouter = require("./routes/category.routes");
+const productRouter = require("./routes/product.routes");
 
 // Variables de entorno
 require("dotenv").config();
@@ -28,6 +29,7 @@ db.once("open", () => {
 app.use(express.json());
 app.use("/", userRouter);
 app.use("/categories", categoryRouter);
+app.use("/products", productRouter);
 
 const port = process.env.PORT;
 
