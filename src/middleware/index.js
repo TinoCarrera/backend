@@ -8,20 +8,20 @@ exports.requireLogin = (req, res, next) => {
     req.user = user;
     next();
   } else {
-    return res.status(400).json({ message: "Autorización requerida" });
+    return res.status(400).json({ message: "Necesitas iniciar sesión" });
   }
 };
 
 exports.userMiddleware = (req, res, next) => { 
   if (req.user.role !== "user") {
-    return res.status(400).json({ message: "Acceso de usuario denegado" });
+    return res.status(400).json({ message: "Necesitas ser usuario" });
   }
   next();
 };
 
 exports.adminMiddleware = (req, res, next) => {
   if (req.user.role !== "admin") {
-    return res.status(400).json({ message: "Acceso de administrador denegado" });
+    return res.status(400).json({ message: "Necesitas ser administrador" });
   }
   next();
 };

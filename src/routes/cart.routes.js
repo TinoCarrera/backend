@@ -1,14 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const CategoryController = require("../controllers/category.controller");
+const CartController = require("../controllers/cart.controller");
 const Middleware = require("../middleware/index");
 
 router.post(
   "/add",
   Middleware.requireLogin,
-  Middleware.adminMiddleware,
-  CategoryController.addCategory
+  Middleware.userMiddleware,
+  CartController.addItemToCart
 );
-router.get("/", CategoryController.getCategories);
 
 module.exports = router;

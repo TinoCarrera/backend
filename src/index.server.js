@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const userRouter = require("./routes/user.routes");
 const categoryRouter = require("./routes/category.routes");
 const productRouter = require("./routes/product.routes");
+const cartRouter = require("./routes/cart.routes");
 
 // Variables de entorno
 require("dotenv").config();
@@ -17,6 +18,7 @@ mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
+  useFindAndModify: false,
 });
 
 const db = mongoose.connection;
@@ -30,6 +32,7 @@ app.use(express.json());
 app.use("/", userRouter);
 app.use("/categories", categoryRouter);
 app.use("/products", productRouter);
+app.use("/cart", cartRouter);
 
 const port = process.env.PORT;
 
