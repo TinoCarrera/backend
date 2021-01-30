@@ -53,11 +53,13 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+// Encriptación de la contraseña
 UserSchema.methods.encrypt = async (password) => {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
 
+// Autenticación de la contraseña
 UserSchema.methods.authenticate = async function(password) {
   return await bcrypt.compare(password, this.password);
 };
