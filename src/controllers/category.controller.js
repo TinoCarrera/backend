@@ -14,22 +14,26 @@ function createCategories(categories, parentId = null) {
       _id: cate._id,
       name: cate.name,
       slug: cate.slug,
-      children: createCategories(categories, cate._id)
+      children: createCategories(categories, cate._id),
     });
   }
   return categoryList;
 }
 
 exports.addCategory = async (req, res) => {
+  const categoryObj = {
+    name: req.body.name,
+    slug: slugify(req.body.name, { lower: true }),
+  };
+  if (req.file) {
+    categoryObj.categoryImage =
+      process.env.API + "/public/" + req.file.filename;
+  }
+  if (req.body.parentId) {
+    categoryObj.parentId = req.body.parentId;
+  }
+  const newCategory = new Category(categoryObj);
   try {
-    const categoryObj = {
-      name: req.body.name,
-      slug: slugify(req.body.name, { lower: true }),
-    };
-    if (req.body.parentId) {
-      categoryObj.parentId = req.body.parentId;
-    }
-    const newCategory = new Category(categoryObj);
     const saveCategory = await newCategory.save();
     res
       .status(201)

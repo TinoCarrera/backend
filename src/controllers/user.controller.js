@@ -40,7 +40,7 @@ exports.userLogin = async (req, res) => {
   if (user) {
     if (user.authenticate(password)) {
       const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "1d",
       });
       res.status(200).json({
         token,
@@ -96,7 +96,7 @@ exports.adminLogin = async (req, res) => {
   if (user) {
     if (user.authenticate(password) && user.role === "admin") {
       const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "1d",
       });
       res.status(200).json({
         token,

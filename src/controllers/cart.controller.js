@@ -9,39 +9,33 @@ exports.addItemToCart = async (req, res) => {
         const itemExist = await cartExist.cartItems.find(
           (cart) => cart.product == item
         );
+        let condition, update;
         if (itemExist) {
-          try {
-            const newQuantity = req.body.cartItems.quantity;
-            const addQuantity = await Cart.findOneAndUpdate(
-              { user: req.user._id, "cartItems.product": item },
-              {
-                $set: {
-                  cartItems: {
-                    ...req.body.cartItems,
-                    quantity: itemExist.quantity + newQuantity,
-                  },
-                },
-              }
-            );
-            res
-              .status(200)
-              .json({ data: addQuantity, message: "Cantidad actualizada" });
-          } catch (error) {
-            console.log("Error: " + error);
-            res.status(500).json({ message: error.message });
-          }
-        } else {
-          const addProduct = await Cart.findOneAndUpdate(
-            { user: req.user._id },
-            {
-              $push: {
-                cartItems: req.body.cartItems,
+          condition = { user: req.user._id, "cartItems.product": item };
+          update = {
+            $set: {
+              "cartItems.$": {
+                ...req.body.cartItems,
+                quantity: itemExist.quantity + req.body.cartItems.quantity,
               },
-            }
-          );
+            },
+          };
+        } else {
+          condition = { user: req.user._id };
+          update = {
+            $push: {
+              cartItems: req.body.cartItems,
+            },
+          };
+        }
+        try {
+          const updateCart = await Cart.findOneAndUpdate(condition, update);
           res
             .status(200)
-            .json({ data: addProduct, message: "Producto agregado al carrito" });
+            .json({ data: updateCart, message: "Carrito actualizado" });
+        } catch (error) {
+          console.log("Error: " + error);
+          res.status(500).json({ message: error.message });
         }
       } catch (error) {
         console.log("Error: " + error);
